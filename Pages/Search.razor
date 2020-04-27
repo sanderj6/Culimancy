@@ -1,0 +1,75 @@
+﻿@page "/counter"
+@using GenericInterfaces.Search
+@using global::Common.Models
+@using RestSharp.Extensions
+@using Culimancy.Common.HttpModels
+@inject SearchGI SearchGI
+@inject IJSRuntime JSRuntime
+
+<h1>Search</h1>
+
+<p>Current search: @currentSearch</p>
+
+<EditForm Model="allRecipes" OnSubmit="@SearchRecipes">
+    <InputText @bind-Value="@currentSearch"></InputText>
+
+    <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button>
+
+    @if (Loading)
+    {
+        <div class="mx-auto my-auto col-6 text-center">
+            <div class="loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+    }
+    else
+    {
+        <div class="grid">
+            @foreach (var recipe in allRecipes)
+            {
+                <div class="grid-item">
+                    <img src="@recipe.Image">
+                    <Recipe></Recipe>
+                </div>
+            }
+        </div>
+    }
+</EditForm>
+
+@code {
+    private RecipeModel recipeModel = new RecipeModel();
+    private List<RecipeModel> allRecipes = new List<RecipeModel>();
+    private int currentCount = 0;
+    private string currentSearch;
+    public bool Loading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("StartIsotope");
+        }
+        catch (Exception e)
+        {
+        }
+    }
+
+    private async void SearchRecipes()
+    {
+        Loading = true;
+
+        EdamamResponseModel edamamResponse = await SearchGI.GetRecipes(currentSearch);
+        allRecipes.Clear();
+
+        foreach (var result in edamamResponse.hits)
+        {
+            allRecipes.Add(new RecipeModel()
+            {
+                Image = result.recipe.image
+            });
+        }
+
+        Loading = false;
+        StateHasChanged();
+    }
+}

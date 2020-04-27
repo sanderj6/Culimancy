@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Culimancy", "Culimancy.csproj", "{BC18F1C8-F6F1-4180-A8D4-A62AD18009FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC18F1C8-F6F1-4180-A8D4-A62AD18009FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC18F1C8-F6F1-4180-A8D4-A62AD18009FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC18F1C8-F6F1-4180-A8D4-A62AD18009FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC18F1C8-F6F1-4180-A8D4-A62AD18009FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3C5C51BE-CA1D-4533-B967-BC6EE723B379}
+	EndGlobalSection
+EndGlobal
