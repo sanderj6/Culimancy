@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Common.Models
+namespace Culimancy.Common.Models
 {
     public abstract class BaseModel
     {

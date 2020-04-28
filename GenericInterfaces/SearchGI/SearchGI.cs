@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Common.Helpers;
-using Common.Models;
 using Culimancy.Common.HttpModels;
 using Data.Search;
 using GenericInterfaces.Inventory;
@@ -31,13 +30,13 @@ namespace GenericInterfaces.Search
             _httpContext = httpContextAccessor.HttpContext;
         }
 
-        public async Task<SpoonacularResponseModel> AskQuestion(string search)
+        public SpoonacularResponseModel AskQuestion(string search)
         {
             try
             {
                 //var searchEngine = DIExtensions.GetServiceByType(_httpContext.RequestServices.GetServices<ISearch>(), typeof(SearchEngine));
                 SearchEngine searchEngine = new SearchEngine(_config,_loggerFactory, _httpClientFactory);
-                var recipes = await searchEngine.AskQuestion(search);
+                var recipes = searchEngine.AskQuestion(search);
 
                 return recipes;
             }
@@ -47,20 +46,20 @@ namespace GenericInterfaces.Search
                 return new SpoonacularResponseModel();
             }
         }
-        public async Task<EdamamResponseModel> GetRecipes(string search)
+        public List<EdamamRecipe> GetRecipes(string search)
         {
             try
             {
                 //var searchEngine = DIExtensions.GetServiceByType(_httpContext.RequestServices.GetServices<ISearch>(), typeof(SearchEngine));
                 SearchEngine searchEngine = new SearchEngine(_config, _loggerFactory, _httpClientFactory);
-                var recipes = await searchEngine.GetRecipes(search);
+                var recipes = searchEngine.GetRecipes(search);
 
                 return recipes;
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Failed to find food!");
-                return new EdamamResponseModel();
+                return new List<EdamamRecipe>();
             }
         }
     }

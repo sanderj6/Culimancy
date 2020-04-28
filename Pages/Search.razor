@@ -1,6 +1,6 @@
 ﻿@page "/counter"
 @using GenericInterfaces.Search
-@using global::Common.Models
+@using Common.Models
 @using RestSharp.Extensions
 @using Culimancy.Common.HttpModels
 @inject SearchGI SearchGI
@@ -15,30 +15,21 @@
 
     <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button>
 
-    @if (Loading)
-    {
-        <div class="mx-auto my-auto col-6 text-center">
-            <div class="loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-        </div>
-    }
-    else
-    {
-        <div class="grid">
+    <div class="col-lg-12">
+        <div class="row" id="grid">
             @foreach (var recipe in allRecipes)
             {
-                <div class="grid-item">
-                    <img src="@recipe.Image">
-                    <Recipe></Recipe>
+                <div class="grid-item p-3">
+                    <Recipe Model="recipe"></Recipe>
                 </div>
             }
         </div>
-    }
+    </div>
 </EditForm>
 
 @code {
     private RecipeModel recipeModel = new RecipeModel();
-    private List<RecipeModel> allRecipes = new List<RecipeModel>();
-    private int currentCount = 0;
+    public List<RecipeModel> allRecipes = new List<RecipeModel>();
     private string currentSearch;
     public bool Loading = false;
 
@@ -47,29 +38,48 @@
         await base.OnInitializedAsync();
         try
         {
-            await JSRuntime.InvokeVoidAsync("StartIsotope");
+            //await JSRuntime.InvokeVoidAsync("StartIsotope");
         }
         catch (Exception e)
         {
+            throw e;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 
     private async void SearchRecipes()
     {
-        Loading = true;
-
-        EdamamResponseModel edamamResponse = await SearchGI.GetRecipes(currentSearch);
+        var searchResults = SearchGI.GetRecipes(currentSearch);
         allRecipes.Clear();
 
-        foreach (var result in edamamResponse.hits)
+        foreach (var result in searchResults)
         {
             allRecipes.Add(new RecipeModel()
             {
-                Image = result.recipe.image
+                Name = result.label,
+                Image = result.image,
+                Website = result.shareAs,
+                Calories = result.calories,
+                Ingredients = result.ingredients.Select(x => x.text).ToList()
             });
         }
 
-        Loading = false;
+        await JSRuntime.InvokeVoidAsync("StartIsotope");
         StateHasChanged();
     }
 }

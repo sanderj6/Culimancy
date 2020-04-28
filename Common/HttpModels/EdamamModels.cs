@@ -17,12 +17,12 @@ namespace Culimancy.Common.HttpModels
 
     public class Hit
     {
-        public Recipe recipe { get; set; }
+        public EdamamRecipe recipe { get; set; }
         public bool bookmarked { get; set; }
         public bool bought { get; set; }
     }
 
-    public class Recipe
+    public class EdamamRecipe
     {
         public string uri { get; set; }
         public string label { get; set; }

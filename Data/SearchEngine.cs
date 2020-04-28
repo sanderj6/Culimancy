@@ -3,12 +3,12 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Common.Models;
 using Culimancy.Common.HttpModels;
 using RestSharp;
 
@@ -20,7 +20,6 @@ namespace Data.Search
         private ILoggerFactory _loggerFactory;
         private readonly ILogger _logger;
         private IHttpClientFactory _httpClientFactory;
-        private string requestURI = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/quickAnswer?q=How%20much%20vitamin%20c%20is%20in%202%20apples%253F";
         public SearchEngine(IConfiguration config, ILoggerFactory loggerFactory, IHttpClientFactory httpClientFactory)
         {
             _config = config;
@@ -29,7 +28,7 @@ namespace Data.Search
             _httpClientFactory = httpClientFactory;
         }
         //Method to get the rebates per vehicle and store. Returns a list of rebates, and a compatability list for the ID of each rebate.
-        public async Task<SpoonacularResponseModel> AskQuestion(string search)
+        public SpoonacularResponseModel AskQuestion(string search)
         {
             SpoonacularResponseModel spoonResponse = new SpoonacularResponseModel();
 
@@ -63,9 +62,10 @@ namespace Data.Search
             return spoonResponse;
         }
 
-        public async Task<EdamamResponseModel> GetRecipes(string search)
+        public List<EdamamRecipe> GetRecipes(string search)
         {
             EdamamResponseModel edamamResponse = new EdamamResponseModel();
+            List<EdamamRecipe> searchResults = new List<EdamamRecipe>();
 
             try
             {
@@ -86,13 +86,14 @@ namespace Data.Search
 
                 //msg.EnsureSuccessStatusCode();
                 edamamResponse = JsonConvert.DeserializeObject<EdamamResponseModel>(response.Content);
+                searchResults = edamamResponse.hits.Select(x => x.recipe).ToList();
             }
             catch (Exception e)
             {
                 _logger.LogError($"Failed to find recipes! {e}. Data: {search}");
             }
 
-            return edamamResponse;
+            return searchResults;
         }
     }
 }

@@ -296,3 +296,9 @@ app {
         transform: rotate(360deg);
     }
 }
+
+/* ---- Generic Styling ---- */
+.responsive {
+    width: 100%;
+    height: auto;
+}

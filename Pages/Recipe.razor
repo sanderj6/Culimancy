@@ -1,13 +1,20 @@
 ﻿@using GenericInterfaces.Search
-@using global::Common.Models
+@using Culimancy.Common.HttpModels
+@using Culimancy.Common.Models
 @inject SearchGI SearchGI
 
-<h1>Recipe</h1>
+<h5>@Model.Name</h5>
 
-HELLO FRIEND!
-
-<button class="btn btn-primary">GO!</button>
+<img class="responsive" src="@Model.Image" onclick="window.open(@Model.Website)">
+<ul class="list-group">
+    @foreach (var ingredient in Model.Ingredients)
+    {
+        <li class="list-group-item">@ingredient</li>
+    }
+</ul>
 
 @code {
-    private RecipeModel _recipeModel = new RecipeModel();
+    [Parameter]
+    public RecipeModel Model { get; set; }
+
 }

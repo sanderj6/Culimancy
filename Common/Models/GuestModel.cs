@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Common.Enums;
 
-namespace Common.Models
+namespace Culimancy.Common.Models
 {
     public class GuestModel : BaseModel
     {
