@@ -7,6 +7,7 @@
 
 <img class="responsive" src="@Model.Image" onclick="window.open(@Model.Website)">
 <ul class="list-group">
+    @Model.Source
     @foreach (var ingredient in Model.Ingredients)
     {
         <li class="list-group-item">@ingredient</li>

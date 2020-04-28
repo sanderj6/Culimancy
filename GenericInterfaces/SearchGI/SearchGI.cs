@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Common.Helpers;
 using Culimancy.Common.HttpModels;
+using Culimancy.Common.Models;
 using Data.Search;
 using GenericInterfaces.Inventory;
 using Microsoft.AspNetCore.Http;
@@ -61,6 +62,14 @@ namespace GenericInterfaces.Search
                 _logger.LogError(e, "Failed to find food!");
                 return new List<EdamamRecipe>();
             }
+        }
+
+        public List<RecipeModel> GetRecipes(string search, string website)
+        {
+            SearchEngine searchEngine = new SearchEngine(_config, _loggerFactory, _httpClientFactory);
+            var recipes = searchEngine.GetRecipes(search, website);
+
+            return recipes;
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Culimancy.Common.HttpModels;
+using Culimancy.Common.Models;
 using RestSharp;
 
 namespace Data.Search
@@ -87,6 +88,41 @@ namespace Data.Search
                 //msg.EnsureSuccessStatusCode();
                 edamamResponse = JsonConvert.DeserializeObject<EdamamResponseModel>(response.Content);
                 searchResults = edamamResponse.hits.Select(x => x.recipe).ToList();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Failed to find recipes! {e}. Data: {search}");
+            }
+
+            return searchResults;
+        }
+        public List<RecipeModel> GetRecipes(string search, string website)
+        {
+            List<RecipeModel> searchResults = new List<RecipeModel>();
+            List<string> headers = new List<string>();
+            try
+            {
+                var web = new HtmlAgilityPack.HtmlWeb();
+                var doc = web.Load("https://www.bonappetit.com/recipe/chicken-tikka-masala");
+                var headerNames = doc.DocumentNode.SelectNodes("//li[@class='ingredient']")?.ToList();
+                var name = doc.DocumentNode.SelectSingleNode("//a[@name='top']").InnerText;
+                var image = doc.DocumentNode.SelectSingleNode("//img[@class='ba-picture--fit']");
+                var imagesrc = image.Attributes["srcset"].Value.Split(" ")[0];
+
+                foreach (var item in headerNames)
+                {
+                    headers.Add(item.InnerText);
+                }
+
+                searchResults.Add(new RecipeModel()
+                {
+                    Name = name,
+                    Image = imagesrc,
+                    Website = "https://www.bonappetit.com/recipe/chicken-tikka-masala",
+                    Source = "Bon-Apetit",
+                    //Calories = result.calories,
+                    Ingredients = headers
+                });
             }
             catch (Exception e)
             {
