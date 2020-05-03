@@ -18,7 +18,7 @@ namespace Culimancy
         {
             CreateHostBuilder(args).Build().Run();
 
-            var cs = "Host=localhost;Username=postgres;Password=Youngcakes12;Database=testdb";
+            var cs = "Host=localhost;Username=postgres;Password=Youngcakes12;Database=Culimancy";
 
             using var con = new NpgsqlConnection(cs);
             con.Open();

@@ -27,7 +27,7 @@ namespace Storage
         {
             // Load the Connection String from the config
             _logger = loggerFactory.CreateLogger<RecipeRepository>();
-            connectionStringMain = "Host=localhost;Username=postgres;Password=Youngcakes12;Database=testdb";
+            connectionStringMain = "Host=localhost;Username=postgres;Password=Youngcakes12;Database=Culimancy";
             //connectionStringUser = config.GetConnectionString("PostgresUserConnection");
             connectionStringUser += "Database=";
         }
