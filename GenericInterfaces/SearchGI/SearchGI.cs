@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Storage;
 
 namespace GenericInterfaces.Search
 {
@@ -71,5 +72,22 @@ namespace GenericInterfaces.Search
 
             return recipes;
         }
+
+        //Repository
+        public async Task<RecipeModel> AddRecipe(RecipeModel recipe)
+        {
+            RecipeRepository repo = new RecipeRepository(_config, _loggerFactory);
+            var response = await repo.Add(recipe);
+
+            return response;
+        }
+        public async Task<List<RecipeModel>> GetRecipeByKeyword(string keyword)
+        {
+            RecipeRepository repo = new RecipeRepository(_config, _loggerFactory);
+            var response = await repo.Get(keyword);
+
+            return response.ToList();
+        }
+
     }
 }
