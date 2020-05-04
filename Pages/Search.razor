@@ -1,4 +1,4 @@
-﻿@page "/counter"
+﻿@page "/"
 @using GenericInterfaces.Search
 @using Common.Models
 @using RestSharp.Extensions
@@ -15,8 +15,8 @@
     <InputText @bind-Value="@currentSearch"></InputText>
 
     <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button>
-    <button class="btn btn-primary" @onclick="ScrapeForRecipes">Custom Scrape</button>
-    <button class="btn btn-primary" @onclick="GetRecipe">Find in Database</button>
+    @*<button class="btn btn-primary" @onclick="ScrapeForRecipes">Custom Scrape</button>*@
+    @*<button class="btn btn-primary" @onclick="GetRecipe">Find in Database</button>*@
 
     <div class="col-lg-12">
         <div class="row" id="grid">
