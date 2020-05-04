@@ -32,7 +32,7 @@ namespace Storage
             connectionStringUser += "Database=";
         }
         public NpgsqlConnection Connection => new NpgsqlConnection(connectionStringMain);
-        public async Task<RecipeModel> Add(RecipeModel item)
+        public async Task<RecipeModel> Add(RecipeModel recipe)
         {
             try
             {
@@ -40,8 +40,8 @@ namespace Storage
                 {
                     await dbConnection.OpenAsync();
                     var result = await dbConnection.QueryFirstAsync<RecipeModel>(@"SELECT * FROM ""Recipe_Add""" +
-                        "(@Name)",
-                        new { Name = item.Name });
+                        "(@Name,@WebsiteURL,@SourceName,@ImageURL,@Calories)",
+                        new { Name = recipe.Name, WebsiteURL = recipe.Website, SourceName = recipe.Source, ImageURL = recipe.Image, Calories = recipe.Calories });
                     return result;
                 }
             }

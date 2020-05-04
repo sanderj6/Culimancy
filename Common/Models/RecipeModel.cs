@@ -12,7 +12,7 @@ namespace Culimancy.Common.Models
         public string Website { get; set; }
         public string Source { get; set; }
         public string Image { get; set; }
-        public float Calories { get; set; }
+        public int Calories { get; set; }
         public List<string> Ingredients { get; set; }
         public List<AppEnums.DietType> DietTypes { get; set; }
         public List<AppEnums.FoodSensitivity> FoodSensitivities { get; set; }

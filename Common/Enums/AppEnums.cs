@@ -16,7 +16,8 @@ namespace Common.Enums
             Atkins = 7,
             Zone = 8,
             Candida = 9,
-            Vegetarian = 10
+            Vegetarian = 10,
+            Whole30 = 11
         }
         public enum FoodSensitivity
         {

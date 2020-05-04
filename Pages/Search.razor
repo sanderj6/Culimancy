@@ -6,7 +6,8 @@
 @inject SearchGI SearchGI
 @inject IJSRuntime JSRuntime
 
-<h1>Search</h1>
+<h1>Search For A Recipe</h1>
+<h4>This website is currently a work in progress.</h4>
 
 <p>Current search: @currentSearch</p>
 
@@ -77,10 +78,29 @@
                 Image = result.image,
                 Website = result.shareAs,
                 Source = result.source,
-                Calories = result.calories,
+                Calories = (int)result.calories,
                 Ingredients = result.ingredients.Select(x => x.text).ToList()
             });
         }
+
+        var tasks = new List<Task>();
+
+        foreach (var recipe in allRecipes)
+        {
+            tasks.Add(Task.Run(() =>
+            {
+                var result = SearchGI.AddRecipe(recipe).Result;
+            }));
+        }
+
+        try
+        {
+            await Task.WhenAll(tasks.ToArray());
+        }
+        catch (Exception e)
+        {
+        }
+
 
         await JSRuntime.InvokeVoidAsync("StartIsotope");
         StateHasChanged();
