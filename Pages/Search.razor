@@ -3,6 +3,7 @@
 @using Common.Models
 @using RestSharp.Extensions
 @using Culimancy.Common.HttpModels
+@using System.Diagnostics
 @inject SearchGI SearchGI
 @inject IJSRuntime JSRuntime
 
@@ -83,24 +84,30 @@
             });
         }
 
-        var tasks = new List<Task>();
-
-        foreach (var recipe in allRecipes)
-        {
-            tasks.Add(Task.Run(() =>
-            {
-                var result = SearchGI.AddRecipe(recipe).Result;
-            }));
-        }
-
         try
         {
-            await Task.WhenAll(tasks.ToArray());
+            var tasks = new List<Task>();
+
+            foreach (var recipe in allRecipes)
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    var result = SearchGI.AddRecipe(recipe).Result;
+                }));
+            }
+
+            try
+            {
+                await Task.WhenAll(tasks.ToArray());
+            }
+            catch (Exception e)
+            {
+            }
         }
         catch (Exception e)
         {
+            Debug.WriteLine(e,"Issue writing to database");
         }
-
 
         await JSRuntime.InvokeVoidAsync("StartIsotope");
         StateHasChanged();

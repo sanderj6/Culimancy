@@ -119,7 +119,7 @@ namespace Data.Search
                     Name = name,
                     Image = imagesrc,
                     Website = "https://www.bonappetit.com/recipe/chicken-tikka-masala",
-                    Source = "Bon-Apetit",
+                    Source = "Bon-Appetit",
                     //Calories = result.calories,
                     Ingredients = headers
                 });
