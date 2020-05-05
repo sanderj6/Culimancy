@@ -27,7 +27,7 @@ namespace Storage
         {
             // Load the Connection String from the config
             _logger = loggerFactory.CreateLogger<RecipeRepository>();
-            connectionStringMain = "Host=localhost;Username=postgres;Password=Youngcakes12;Database=Culimancy";
+            connectionStringMain = "Host=culimancy-dev.cccfv62sr8ci.us-east-2.rds-preview.amazonaws.com;Username=sanderj6;Password=Youngcakes12;Database=culimancy_dev";
             //connectionStringUser = config.GetConnectionString("PostgresUserConnection");
             connectionStringUser += "Database=";
         }
@@ -39,7 +39,7 @@ namespace Storage
                 using (var dbConnection = new NpgsqlConnection(connectionStringMain))
                 {
                     await dbConnection.OpenAsync();
-                    var result = await dbConnection.QueryFirstAsync<RecipeModel>(@"SELECT * FROM ""Recipe_Add""" +
+                    var result = await dbConnection.QueryFirstAsync<RecipeModel>(@"SELECT * FROM ""Recipes_AddOrUpdate""" +
                         "(@Name,@WebsiteURL,@SourceName,@ImageURL,@Calories)",
                         new { Name = recipe.Name, WebsiteURL = recipe.Website, SourceName = recipe.Source, ImageURL = recipe.Image, Calories = recipe.Calories });
                     return result;
@@ -64,7 +64,7 @@ namespace Storage
                 using (var dbConnection = new NpgsqlConnection(connectionStringMain))
                 {
                     await dbConnection.OpenAsync();
-                    var result = await dbConnection.QueryAsync<RecipeModel>(@"SELECT * FROM ""Recipe_Get""" +
+                    var result = await dbConnection.QueryAsync<RecipeModel>(@"SELECT * FROM ""Recipes_Get""" +
                         "(@Name)",
                         new { Name = item });
                     return result;
