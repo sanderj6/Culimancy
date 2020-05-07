@@ -56,7 +56,30 @@ namespace Storage
                 throw;
             }
         }
-
+        public async Task<string> Add(string ingredient)
+        {
+            try
+            {
+                using (var dbConnection = new NpgsqlConnection(connectionStringMain))
+                {
+                    await dbConnection.OpenAsync();
+                    var result = await dbConnection.QueryFirstAsync<string>(@"SELECT * FROM ""Ingredients_AddOrUpdate""" +
+                                                                                 "(@Ingredient)",
+                        new { Ingredient = ingredient });
+                    return result;
+                }
+            }
+            catch (NpgsqlException e)
+            {
+                _logger.LogError(e, "Failed to add recipe.");
+                throw;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Failed to add recipe.");
+                throw;
+            }
+        }
         public async Task<IEnumerable<RecipeModel>> Get(string item)
         {
             try

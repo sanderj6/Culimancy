@@ -4,14 +4,17 @@
 @using RestSharp.Extensions
 @using Culimancy.Common.HttpModels
 @using System.Diagnostics
+@using System.Text.RegularExpressions
 @inject SearchGI SearchGI
 @inject IJSRuntime JSRuntime
 
-<h1>Search For A Recipe</h1>
-<h4>This website is currently a work in progress.</h4>
-<h8>v0.17</h8>
+<div class="col-6">
+    <h1 id="textBackground">Search For A Recipe</h1>
+    <small class="text-muted">v0.18</small>
 
-<p>Current search: @currentSearch</p>
+    <h4>This website is currently a work in progress.</h4>
+    <p>Current search: @currentSearch</p>
+</div>
 
 <EditForm Model="allRecipes" OnSubmit="@SearchRecipes">
     <InputText @bind-Value="@currentSearch"></InputText>
@@ -19,6 +22,18 @@
     <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button>
     @*<button class="btn btn-primary" @onclick="ScrapeForRecipes">Custom Scrape</button>*@
     @*<button class="btn btn-primary" @onclick="GetRecipe">Find in Database</button>*@
+
+    @if (Disclaimer)
+    {
+        <div id="disclaimer">
+            <small>
+                This search asynchronously pulled recipe and nutritional information from several API's. <br />
+                All recipes and ingredients are then stored in my own database. <br />
+                Common words like chicken, onions, and garlic have their results cached in Redis for immediate access. <br />
+                The end goal is to create a pantry management system that searches only by the grocery items currently in your possession.
+            </small>
+        </div>
+    }
 
     <div class="col-lg-12">
         <div class="row" id="grid">
@@ -36,7 +51,10 @@
     private RecipeModel recipeModel = new RecipeModel();
     public List<RecipeModel> allRecipes = new List<RecipeModel>();
     private string currentSearch;
+
     public bool Loading = false;
+    public bool Disclaimer = false;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,6 +87,9 @@
 
     private async void SearchRecipes()
     {
+        //Show disclaimer
+        Disclaimer = true;
+
         var searchResults = SearchGI.GetRecipes(currentSearch);
         allRecipes.Clear();
 
@@ -95,6 +116,29 @@
                 {
                     var result = SearchGI.AddRecipe(recipe).Result;
                 }));
+
+                foreach (var ingredient in recipe.Ingredients)
+                {
+                    //Filter unnecessary ingredients
+                    var ingredientWords = ingredient.Split(" ").ToList();
+                    var unnecessaryWords = ingredientWords.Where(x => x.Contains("cups"));
+                    var filteredIngredients = ingredientWords.Except(unnecessaryWords);
+
+                    var test = string.Join(" ", Regex.Split(ingredient, @"[\d]"));
+                    //(?< !^)(?=[A - Z])
+
+                    tasks.Add(Task.Run(() =>
+                    {
+                        try
+                        {
+                            var result = SearchGI.AddIngredient(ingredient).Result;
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e, "Issue writing to database");
+                        }
+                    }));
+                }
             }
 
             try
@@ -103,11 +147,12 @@
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e, "Issue writing to database");
             }
         }
         catch (Exception e)
         {
-            Debug.WriteLine(e,"Issue writing to database");
+            Debug.WriteLine(e, "Issue writing to database");
         }
 
         await JSRuntime.InvokeVoidAsync("StartIsotope");
@@ -115,7 +160,7 @@
     }
     private async void ScrapeForRecipes()
     {
-        var searchResults = SearchGI.GetRecipes(currentSearch,"foodnetwork");
+        var searchResults = SearchGI.GetRecipes(currentSearch, "foodnetwork");
         allRecipes.Clear();
 
         foreach (var result in searchResults)
