@@ -1,21 +1,119 @@
 ﻿@using GenericInterfaces.Search
 @using Culimancy.Common.HttpModels
 @using Culimancy.Common.Models
+@using System.Diagnostics
 @inject SearchGI SearchGI
 
-<h5>@Model.Name</h5>
+<div class="grid-item recipe-card-wrapper col-lg-4 col-md-6 col-sm-12 pb-2 px-2">
+    <div class="recipe-card card @SizeClasses">
+        <div class="card-title">
+            <div class="fa-pull-right">
+                <label class="switch pl-0 mr-1">
+                    @if (ToggleEnabled)
+                    {
+                        <input type="checkbox" @onchange="ToggleSwitch" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" @onchange="ToggleSwitch">
+                    }
+                    <span class="slider slider-sm round mt-1"></span>
+                </label>
+                @ToggleText
+                @if (CloseCallback != null)
+                {
+                    <button type="button" class="ml-2 mb-1 close" aria-label="Close" style="right:1.5rem;" @onclick="Close">
+                        <i class="nav-icon-close-black"></i>
+                    </button>
+                }
+            </div>
+            <div class="recipe-card-year-make">@Model.Name</div>
+            <div class="recipe-card-model-trim">Gluten-Free, Nut-Free</div>
+        </div>
+        <div class="card-body">
+            @if (ImageRotator)
+            {
+                <div class="row recipe-viewer" id="viewer-@Model.Source">
+                    <iframe allowfullscreen="true" mozallowfullscreen="true" src="https://demos.evox.com/SquareSpaceWeb/GT3/13541_ex1024.html?wmode=opaque" webkitallowfullscreen="true" title="GT3"
+                            marginwidth="0" scrolling="no" name="Object" width="1500" data-embed="true" frameborder="0" style="float:left; margin-left:0px" marginheight="0" height="317"></iframe>
+                </div>
+            }
+            else
+            {
+                <div class="row recipe-image">
+                    <img class="mx-auto d-block img-fluid" src="@(Model.Image ?? "/images/recipe-placeholder.png")" style="cursor:pointer;" @onclick="(() => { ImageClick(Model.Website); })" />
+                </div>
+            }
+            @*@CardBody*@
+            <ul class="list-group">
+                @Model.Source
+                @foreach (var ingredient in Model.Ingredients)
+                {
+                    <li class="list-group-item">@ingredient</li>
+                }
+            </ul>
+        </div>
+    </div>
+    @*@CardFooter*@
+</div>
 
-<img class="responsive" src="@Model.Image" onclick="window.open(@Model.Website)">
-<ul class="list-group">
-    @Model.Source
-    @foreach (var ingredient in Model.Ingredients)
-    {
-        <li class="list-group-item">@ingredient</li>
-    }
-</ul>
+
 
 @code {
     [Parameter]
     public RecipeModel Model { get; set; }
+    [Parameter]
+    public string SizeClasses { get; set; } = "";
+    [Parameter]
+    public RenderFragment CardBody { get; set; }
+    [Parameter]
+    public RenderFragment CardFooter { get; set; }
+    [Parameter]
+    public Action<RecipeModel, bool> ToggleCallback { get; set; }
+    [Parameter]
+    public bool ToggleEnabled { get; set; }
+    [Parameter]
+    public RenderFragment ToggleText { get; set; }
+    [Parameter]
+    public Action<RecipeModel> CloseCallback { get; set; }
+    [Parameter]
+    public Action<RecipeModel> ImageCallback { get; set; }
+    [Parameter]
+    public bool ImageRotator { get; set; }
 
+    // Event Handlers
+    private void ToggleSwitch(ChangeEventArgs args)
+    {
+        ToggleCallback?.Invoke(Model, (bool)args.Value);
+    }
+    private void Close()
+    {
+        CloseCallback?.Invoke(Model);
+    }
+    private bool ImageClick(string uri)
+    {
+        try
+        {
+            if (!IsValidUri(uri))
+                return false;
+            System.Diagnostics.Process.Start(uri);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e.Message);
+            return false;
+        }
+    }
+
+    //Make this a service
+    public static bool IsValidUri(string uri)
+    {
+        if (!Uri.IsWellFormedUriString(uri, UriKind.Absolute))
+            return false;
+        Uri tmp;
+        if (!Uri.TryCreate(uri, UriKind.Absolute, out tmp))
+            return false;
+        return tmp.Scheme == Uri.UriSchemeHttp || tmp.Scheme == Uri.UriSchemeHttps;
+    }
 }

@@ -13,10 +13,10 @@
     <img class="background-image" src="images/pantrymgmt.PNG" />
     <div class="background-text-search">
         <div class="col-8">
-            <h1 id="textBackground">Search For A Recipe</h1>
+            <h1 id="textBackground" style="font-family: wizard">Culimancy</h1>
             <small class="text-muted">v0.18</small>
 
-            <h4>This website was written in Blazor, and is currently a work in progress.</h4>
+            <small>This website was written in Blazor, and is currently a work in progress.</small>
 
             @if (Disclaimer)
             {
@@ -30,22 +30,20 @@
                 </div>
             }
 
-            <p>Current search: @currentSearch</p>
         </div>
-        <div class="col-12">
+        <div class="col-12 p-3">
             <EditForm Model="allRecipes" OnSubmit="@SearchRecipes">
+                <h5>Search for a Recipe</h5>
                 <InputText @bind-Value="@currentSearch"></InputText>
                 <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button>
                 @*<button class="btn btn-primary" @onclick="ScrapeForRecipes">Custom Scrape</button>*@
                 @*<button class="btn btn-primary" @onclick="GetRecipe">Find in Database</button>*@
 
                 <div class="col-lg-12">
-                    <div class="row" id="grid">
+                    <div class="p-3 row justify-content-center" id="grid">
                         @foreach (var recipe in allRecipes)
                         {
-                            <div class="grid-item p-3">
-                                <Recipe Model="recipe"></Recipe>
-                            </div>
+                            <Recipe Model="recipe" ToggleCallback="ToggleRecipe" SizeClasses="recipe-price-card" CloseCallback="RemoveRecipe" ToggleEnabled="false" ImageRotator="false"></Recipe>
                         }
                     </div>
                 </div>
@@ -185,11 +183,21 @@
 
         StateHasChanged();
     }
-
     private async void GetRecipe()
     {
         var searchResults = await SearchGI.GetRecipeByKeyword(currentSearch);
 
         StateHasChanged();
+    }
+
+    private void RemoveRecipe(RecipeModel _recipe)
+    {
+        allRecipes.Remove(_recipe);
+        StateHasChanged();
+    }
+
+    private void ToggleRecipe(RecipeModel _recipe, bool status)
+    {
+
     }
 }

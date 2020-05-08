@@ -817,4 +817,262 @@ a.nav-link {
 
 @media (min-width: 992px) {
 }
+
+/*Recipe Cards*/
+.recipe-overview {
+    margin-bottom: 2rem;
+    font-size: 0.71875rem;
+}
+
+.recipe-overview .col-6:first-child {
+    border-right: 2px solid #ced4da;
+}
+
+.recipe-overview.finance .col-6:first-child {
+    border-right: unset;
+}
+
+.recipe-overview > .col-4:first-child {
+    border-right: 2px solid #ced4da;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+/*.recipe-overview.justify-content-center > .col-4:first-child {
+        border-right: unset;
+    }*/
+
+.recipe-overview > .col-4:last-child {
+    border-left: 2px solid #ced4da;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.recipe-overview.justify-content-center > .col-4:last-child {
+    border-left: unset;
+}
+
+.recipe-overview .col-4 hr {
+    width: 30%;
+}
+
+.recipe-summary {
+    font-size: .875rem;
+}
+
+.recipe-summary-bold {
+    font-weight: 600;
+    font-size: .875rem;
+}
+
+.recipe-overview h3 {
+    margin-bottom: unset;
+    margin-top: 0.5rem;
+    font-weight: 400;
+}
+
+.recipe-overview h6 {
+    margin-top: 0.5rem;
+}
+
+.recipe-overview-year-make {
+    font-size: .875rem;
+    color: #484949;
+    font-weight: 500;
+}
+
+.recipe-overview-model-trim {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.recipe-image .col-8 .d-block.img-fluid {
+    margin: .5rem 0;
+}
+
+/*.recipe-overview .recipe-image {
+        width: 60%;
+    }*/
+
+/* Desking Inventory Search */
+.inventory-search-results .recipe-card-wrapper {
+    padding: unset;
+}
+
+.recipe-card-year-make {
+    color: #848484;
+    font-weight: 400;
+    font-size: 1.125rem;
+}
+
+.recipe-card-model-trim {
+    color: #000;
+    font-weight: 500;
+    font-size: 1.25rem;
+}
+
+.recipe-details {
+    color: #848484;
+    font-size: 0.7rem;
+    display: block;
+}
+
+.recipe-selling-price-header {
+    font-size: 0.813rem;
+    font-weight: 600;
+    display: block;
+}
+
+.recipe-selling-price {
+    font-size: 0.813rem;
+    font-weight: 500;
+    color: #000;
+    display: block;
+}
+
+.recipe-card {
+    /*padding: .4rem .5rem;*/
+    border: 2px solid #ced4da;
+    -webkit-border-radius: .5rem;
+    -moz-border-radius: .5rem;
+    border-radius: .5rem;
+    background-color: #fcfcfc;
+    padding: 0.6640625rem;
+}
+
+.recipe-price-card {
+    /*height: 30.703rem;*/
+}
+
+.recipe-specs-card {
+    min-height: 57.551rem;
+}
+
+.carfax-logo {
+    cursor: pointer;
+    width: 4rem;
+    padding-top: 8px;
+    display: inline;
+}
+
+.recipe-card .card-title small {
+    font-size: 0.9375rem;
+    color: #484949;
+    font-weight: 500;
+}
+
+.recipe-card .card-title a.btn-link {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+    .recipe-card .card-title a.btn-link:focus,
+    .recipe-card .card-title a.btn-link:active,
+    .recipe-card .card-title a.btn-link:hover {
+        color: #289FDA;
+        text-decoration: underline;
+        background-color: unset;
+    }
+
+.recipe-card .card-title .nav-icon-close {
+    margin: .25rem .25rem 0 1rem;
+}
+
+.recipe-card .card-body {
+    padding: unset;
+}
+
+    .recipe-card .card-body .recipe-colors {
+        font-size: 80%;
+    }
+
+    .recipe-card .card-body p,
+    .recipe-select .body p {
+        margin: unset;
+    }
+
+.recipe-card-wrapper.col-3 .recipe-select h3 {
+    font-size: 1.375rem;
+}
+
+.recipe-card-wrapper.col-3 .recipe-select h5 {
+    font-size: 1.125rem;
+}
+
+.recipe-card-wrapper.col-3 .recipe-select .additional-info-box p {
+    font-size: 64%;
+}
+
+.recipe-card-wrapper.col-3 .recipe-select small {
+    font-size: 64%;
+}
+
+.recipe-card-wrapper .recipe-select small {
+    color: #999999;
+}
+
+.recipe-card-wrapper .recipe-select .active small {
+    color: #ffffff;
+}
+
+.recipe-card-wrapper.col-4 .recipe-select small {
+    font-size: 64%;
+}
+
+.recipe-selling-price small {
+    font-size: 69%;
+    color: #484949;
+}
+
+/*.row .col-12.align-self-end.text-right .img-fluid.d-block {
+    width: 20%;
+    height: 20%;
+}*/
+
+.recipe-card .card-body .recipe-image img {
+    /*height: 317px;
+    width: 433px;*/
+    margin-bottom: 1rem;
+    padding: 0 .5rem;
+}
+
+.recipe-card .card-body .recipe-viewer {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+}
+
+.recipe-card .card-body .recipe-specs .row .col-6:nth-child(odd) {
+    border-right: 1px solid #E8E8E8;
+}
+
+.recipe-card .card-body .recipe-specs .row .col-6:nth-child(even) {
+    border-left: 1px solid #E8E8E8;
+}
+
+.recipe-card .card-body .recipe-specs .row:nth-child(even) .recipe-quick-spec {
+    border-top: 2px solid #E8E8E8;
+    border-bottom: 2px solid #E8E8E8;
+    padding: 1.5rem 0;
+    margin: 1.5rem 0;
+}
+
+.recipe-card .card-body .recipe-specs .recipe-quick-spec label {
+    font-size: 75%;
+    color: black;
+}
+
+.recipe-card .card-body .recipe-specs .recipe-quick-spec span {
+    font-size: 75%;
+}
+
+.recipe-card .card-body .recipe-specs-full {
+    border-top: 1px solid #ced4da;
+    border-bottom: 1px solid #ced4da;
+    background-color: white;
+    padding: .5rem 1.5rem;
+    margin: .5rem;
+    max-height: 50vh;
+    overflow-y: scroll;
+    overflow-x: hidden
 }
