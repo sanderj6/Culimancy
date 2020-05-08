@@ -1,0 +1,27 @@
+﻿@inject ModalHandler ModalService
+@using Culimancy.Services.ModalService
+@using Culimancy.Pages.Templates
+
+    <div class="footer-holder" @onclick="CreateAccount">
+        <input class="groceryBag" type="image" src="images/grocerybag.png" alt="Submit" style="max-height: 100%; max-width: 100%; height: auto;">
+        @*<input type="image" class="link" src="/images/plus.png" />*@
+    </div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private void CreateAccount()
+    {
+        ModalService.Show<string>("Customer Questionnaire", "culimancy-modal-md", typeof(Culimancy.Pages.Templates.CreateAccount), (account) =>
+        {
+            try
+            {
+                ModalService.Close();
+            }
+            catch (Exception e)
+            {
+            //_logger.LogError($"Failed to Update Questionnaire! Error: {e}");
+        }
+        });
+    }
+}

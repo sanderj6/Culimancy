@@ -13,6 +13,7 @@ using Culimancy.Data;
 using GenericInterfaces.Search;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Culimancy.Services.ModalService;
 
 namespace Culimancy
 {
@@ -35,6 +36,9 @@ namespace Culimancy
             services.AddTransient<SearchGI>();
             services.AddHttpClient();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // Modal Service
+            services.AddModals();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

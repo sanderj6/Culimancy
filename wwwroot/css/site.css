@@ -23,12 +23,137 @@
     }
 }
 
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: transparent;
+    color: black;
+    text-align: left;
+    z-index: 50;
+}
+
+.footer-holder {
+    position: relative;
+}
+
+    .footer-holder .plus {
+        position: absolute;
+        top: 10px; /*your button position*/
+        right: 10px; /*your button position*/
+    }
+
+.groceryBag {
+    background-image: url("../images/grocerybag.png");
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    height: 150px;
+    width: 150px;
+
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+    .groceryBag:hover {
+        transform: scale(1.5);
+    }
+/*Shaking Animation*/
+
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-image: url('../images/pantrymgmt.png');
-    background-size: cover;
+}
+
+body {
+
+}
+
+.background-image {
+    /*background-image: url('../images/pantrymgmt.png');*/
+    /* Add the blur effect */
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    /* Full height */
+    height: 100%;
+    /* Center and scale the image nicely */
+    position: inherit;
+    background-position: center;
     background-repeat: no-repeat;
-    /*background-size: 100% 100%;*/
+    background-size: cover;
+    z-index: 0;
+}
+
+/* Position text in the middle of the page/image */
+.background-text {
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+    color: white;
+    font-weight: bold;
+    border: 3px solid #f1f1f1;
+    position: absolute;
+    /*top: 50%;
+    left: 50%;*/
+    width: auto;
+    /*transform: translate(-50%, -100%);*/
+    z-index: 2;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+}
+
+.background-text-search {
+    /*background-color: rgb(0,0,0); /* Fallback color */
+    /*background-color: rgba(0,0,0, 0.4);*/ /* Black w/opacity/see-through */
+    color: black;
+    font-weight: bold;
+    /*border: 3px solid #f1f1f1;*/
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    /*transform: translate(5%, 25%);*/
+    z-index: 2;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+}
+
+.background-text-recipes {
+    /*background-color: rgb(0,0,0); /* Fallback color */
+    /*background-color: rgba(0,0,0, 0.4);*/ /* Black w/opacity/see-through */
+    color: black;
+    font-weight: bold;
+    /*border: 3px solid #f1f1f1;*/
+    position: absolute;
+    /*top: 0%;
+    left: 0%;*/
+    transform: translate(25%, -15%);
+    z-index: 2;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
 }
 
 #floatingBackground {
@@ -570,4 +695,126 @@ a.nav-link {
     height: 2rem;
     margin-left: 1.875rem;
     margin-right: 1.875rem;
+}
+
+/*Modal Styles*/
+.culimancy-container {
+    display: none;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    z-index: 11;
+}
+
+.culimancy-overlay {
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.culimancy-active {
+    display: flex;
+}
+
+.culimancy-modal {
+    flex-direction: column;
+    background-color: #fcfcfc;
+    border-radius: 4px;
+    border: 1px solid #fcfcfc;
+    padding: 1.5rem;
+    z-index: 2;
+    overflow: hidden auto;
+    max-height: 100%;
+}
+
+.culimancy-modal-xl {
+    width: 95%;
+    min-height: 95%;
+}
+
+.culimancy-modal-lg {
+    width: 75%;
+    /*height: 80%;*/
+}
+
+.culimancy-modal-md {
+    width: 60%;
+    /*height: 75%;*/
+}
+
+.culimancy-modal-sm {
+    width: 50%;
+    /*height: 40%;*/
+}
+
+.culimancy-modal-sm-short {
+    width: 50%;
+    /*height: 25%;*/
+}
+
+.culimancy-modal-xs {
+    width: 40%;
+    /*height: 20%;*/
+}
+
+.culimancy-modal-tiny {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    /*height: 15%;*/
+    background-color: #fcfcfc;
+    border-radius: 4px;
+    border: 1px solid #fcfcfc;
+    padding: 1.5rem;
+    z-index: 4;
+}
+
+.culimancy-modal-scrollbar {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.culimancy-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0 0 2rem 0;
+}
+
+.culimancy-header-slim {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.culimancy-title {
+    margin-bottom: 0;
+}
+
+.culimancy-close {
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.culimancy-content {
+}
+
+@media (max-width: 768px) {
+    .culimancy-modal-md {
+        width: 90%;
+    }
+}
+
+@media (min-width: 768.1px) {
+}
+
+@media (min-width: 992px) {
+}
 }

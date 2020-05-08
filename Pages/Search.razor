@@ -8,44 +8,51 @@
 @inject SearchGI SearchGI
 @inject IJSRuntime JSRuntime
 
-<div class="col-6">
-    <h1 id="textBackground">Search For A Recipe</h1>
-    <small class="text-muted">v0.18</small>
 
-    <h4>This website was written in Blazor, and is currently a work in progress.</h4>
-    <p>Current search: @currentSearch</p>
-</div>
+<div style="position: relative; display: flex;">
+    <img class="background-image" src="images/pantrymgmt.PNG" />
+    <div class="background-text-search">
+        <div class="col-8">
+            <h1 id="textBackground">Search For A Recipe</h1>
+            <small class="text-muted">v0.18</small>
 
-<EditForm Model="allRecipes" OnSubmit="@SearchRecipes">
-    <InputText @bind-Value="@currentSearch"></InputText>
+            <h4>This website was written in Blazor, and is currently a work in progress.</h4>
 
-    <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button>
-    @*<button class="btn btn-primary" @onclick="ScrapeForRecipes">Custom Scrape</button>*@
-    @*<button class="btn btn-primary" @onclick="GetRecipe">Find in Database</button>*@
-
-    @if (Disclaimer)
-    {
-        <div id="disclaimer">
-            <small>
-                This search asynchronously pulled recipe and nutritional information from several API's. <br />
-                All recipes and ingredients are then stored in my own database. <br />
-                Common words like chicken, onions, and garlic have their results cached in Redis for immediate access. <br />
-                The end goal is to create a pantry management system that searches only by the grocery items currently in your possession.
-            </small>
-        </div>
-    }
-
-    <div class="col-lg-12">
-        <div class="row" id="grid">
-            @foreach (var recipe in allRecipes)
+            @if (Disclaimer)
             {
-                <div class="grid-item p-3">
-                    <Recipe Model="recipe"></Recipe>
+                <div id="disclaimer">
+                    <small>
+                        This search asynchronously pulled recipe and nutritional information from several API's. <br />
+                        All recipes and ingredients are then stored in my own database. <br />
+                        Common words like chicken, onions, and garlic have their results cached in Redis for immediate access. <br />
+                        The end goal is to create a pantry management system that searches only by the grocery items currently in your possession.
+                    </small>
                 </div>
             }
+
+            <p>Current search: @currentSearch</p>
+        </div>
+        <div class="col-12">
+            <EditForm Model="allRecipes" OnSubmit="@SearchRecipes">
+                <InputText @bind-Value="@currentSearch"></InputText>
+                <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button>
+                @*<button class="btn btn-primary" @onclick="ScrapeForRecipes">Custom Scrape</button>*@
+                @*<button class="btn btn-primary" @onclick="GetRecipe">Find in Database</button>*@
+
+                <div class="col-lg-12">
+                    <div class="row" id="grid">
+                        @foreach (var recipe in allRecipes)
+                        {
+                            <div class="grid-item p-3">
+                                <Recipe Model="recipe"></Recipe>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </EditForm>
         </div>
     </div>
-</EditForm>
+</div>
 
 @code {
     private RecipeModel recipeModel = new RecipeModel();
