@@ -63,7 +63,7 @@ namespace Data.Search
             return spoonResponse;
         }
 
-        public List<EdamamRecipe> GetRecipes(string search)
+        public async Task<List<EdamamRecipe>> GetRecipes(string search)
         {
             EdamamResponseModel edamamResponse = new EdamamResponseModel();
             List<EdamamRecipe> searchResults = new List<EdamamRecipe>();
@@ -83,7 +83,7 @@ namespace Data.Search
                 var client = new RestClient(longurl);
                 var request = new RestRequest(Method.GET);
 
-                IRestResponse response = client.Execute(request);
+                IRestResponse response = await client.ExecuteAsync(request);
 
                 //msg.EnsureSuccessStatusCode();
                 edamamResponse = JsonConvert.DeserializeObject<EdamamResponseModel>(response.Content);

@@ -23,6 +23,15 @@
     }
 }
 
+.addIngredient {
+
+}
+
+.addIngredient:hover {
+    color: green;
+    transform: scale(1.2);
+}
+
 .footer {
     position: fixed;
     left: 0;
@@ -88,21 +97,22 @@ html, body {
 }
 
 body {
-
+    overflow: hidden;
 }
 
 .background-image {
     /*background-image: url('../images/pantrymgmt.png');*/
     /* Add the blur effect */
-    filter: blur(5px);
-    -webkit-filter: blur(5px);
+    /*filter: blur(5px);
+    -webkit-filter: blur(5px);*/
     /* Full height */
-    height: 100%;
+    width: 100%;
+    height: auto;
+
     /* Center and scale the image nicely */
-    position: inherit;
-    background-position: center;
-    background-repeat: no-repeat;
+    /*position: relative;*/
     background-size: cover;
+    background: no-repeat center center fixed;
     z-index: 0;
 }
 
@@ -119,7 +129,7 @@ body {
     width: auto;
     /*transform: translate(-50%, -100%);*/
     z-index: 2;
-    width: 80%;
+    width: 100%;
     padding: 20px;
     text-align: center;
 }
@@ -135,9 +145,9 @@ body {
     left: 0%;
     /*transform: translate(5%, 25%);*/
     z-index: 2;
-    width: 80%;
+    width: 100%;
     padding: 20px;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .background-text-recipes {
@@ -357,7 +367,7 @@ app {
 
 /*---- Isotope Grids ----*/
 .grid-item {
-    width: 25%;
+    width: 20%;
 }
 
 .grid-item--width2 {
@@ -945,7 +955,7 @@ a.nav-link {
 }
 
 .recipe-specs-card {
-    min-height: 57.551rem;
+    min-height: 30.703rem;
 }
 
 .carfax-logo {
@@ -1072,7 +1082,31 @@ a.nav-link {
     background-color: white;
     padding: .5rem 1.5rem;
     margin: .5rem;
-    max-height: 50vh;
+    max-height: 40vh;
     overflow-y: scroll;
     overflow-x: hidden
 }
+
+.carousel-cell {
+    width: 25%;
+    height: 40rem;
+    margin-right: 10px;
+    /*background: #8C8;*/
+    border-radius: 5px;
+    overflow: auto;
+    /*counter-increment: carousel-cell;*/
+}
+
+.carousel-cell.is-selected {
+    /*background: #ED2;*/
+}
+
+/* cell number */
+    .carousel-cell:before {
+        display: block;
+        text-align: center;
+        /*content: counter(carousel-cell);*/
+        line-height: 25rem;
+        font-size: 80px;
+        color: white;
+    }

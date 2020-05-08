@@ -4,19 +4,19 @@
 @using System.Diagnostics
 @inject SearchGI SearchGI
 
-<div class="grid-item recipe-card-wrapper col-lg-4 col-md-6 col-sm-12 pb-2 px-2">
+<div class="carousel-cell recipe-card-wrapper col-lg-4 col-md-6 col-sm-12 pb-2 px-2">
     <div class="recipe-card card @SizeClasses">
         <div class="card-title">
             <div class="fa-pull-right">
                 <label class="switch pl-0 mr-1">
-                    @if (ToggleEnabled)
+                    @*@if (ToggleEnabled)
                     {
                         <input type="checkbox" @onchange="ToggleSwitch" checked>
                     }
                     else
                     {
                         <input type="checkbox" @onchange="ToggleSwitch">
-                    }
+                    }*@
                     <span class="slider slider-sm round mt-1"></span>
                 </label>
                 @ToggleText
@@ -27,8 +27,8 @@
                     </button>
                 }
             </div>
-            <div class="recipe-card-year-make">@Model.Name</div>
-            <div class="recipe-card-model-trim">Gluten-Free, Nut-Free</div>
+            <div class="recipe-card-model-trim">@Model.Name</div>
+            @*<div class="recipe-card-model-trim">Gluten-Free, Nut-Free</div>*@
         </div>
         <div class="card-body">
             @if (ImageRotator)
@@ -45,11 +45,20 @@
                 </div>
             }
             @*@CardBody*@
+            <div class="form-row">
+                <small class="text-muted fa-pull-right">@Model.Source</small>
+            </div>
             <ul class="list-group">
-                @Model.Source
                 @foreach (var ingredient in Model.Ingredients)
                 {
-                    <li class="list-group-item">@ingredient</li>
+                    <div class="form-row">
+                        <li class="list-group-item col-12 p-1" style="height: 4vh;">
+                            <div class="" style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                <i class="fas fa-plus-circle addIngredient" style="cursor:pointer;" @onclick="(() => { AddIngredient(ingredient); })"></i>
+                                <small style="font-size: 100%;">@ingredient</small>
+                            </div>
+                        </li>
+                    </div>
                 }
             </ul>
         </div>
@@ -90,6 +99,12 @@
     {
         CloseCallback?.Invoke(Model);
     }
+
+    private void AddIngredient(string ingredient)
+    {
+        var test = ingredient;
+    }
+
     private bool ImageClick(string uri)
     {
         try

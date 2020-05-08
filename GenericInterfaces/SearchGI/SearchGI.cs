@@ -48,13 +48,13 @@ namespace GenericInterfaces.Search
                 return new SpoonacularResponseModel();
             }
         }
-        public List<EdamamRecipe> GetRecipes(string search)
+        public async Task<List<EdamamRecipe>> GetRecipes(string search)
         {
             try
             {
                 //var searchEngine = DIExtensions.GetServiceByType(_httpContext.RequestServices.GetServices<ISearch>(), typeof(SearchEngine));
                 SearchEngine searchEngine = new SearchEngine(_config, _loggerFactory, _httpClientFactory);
-                var recipes = searchEngine.GetRecipes(search);
+                var recipes = await searchEngine.GetRecipes(search);
 
                 return recipes;
             }

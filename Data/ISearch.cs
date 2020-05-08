@@ -7,7 +7,7 @@ namespace Data.Search
 {
     public interface ISearch
     {
-        List<EdamamRecipe> GetRecipes(string search);
+        Task<List<EdamamRecipe>> GetRecipes(string search);
         SpoonacularResponseModel AskQuestion(string search);
     }
 }

@@ -10,7 +10,7 @@
 
 
 <div style="position: relative; display: flex;">
-    <img class="background-image" src="images/pantrymgmt.PNG" />
+    <img class="background-image" src="images/pantry2.jpg" />
     <div class="background-text-search">
         <div class="col-8">
             <h1 id="textBackground" style="font-family: wizard">Culimancy</h1>
@@ -34,18 +34,16 @@
         <div class="col-12 p-3">
             <EditForm Model="allRecipes" OnSubmit="@SearchRecipes">
                 <h5>Search for a Recipe</h5>
-                <InputText @bind-Value="@currentSearch"></InputText>
+                <InputText border-radius:25px @bind-Value="@currentSearch"></InputText>
                 <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button>
                 @*<button class="btn btn-primary" @onclick="ScrapeForRecipes">Custom Scrape</button>*@
                 @*<button class="btn btn-primary" @onclick="GetRecipe">Find in Database</button>*@
 
-                <div class="col-lg-12">
-                    <div class="p-3 row justify-content-center" id="grid">
-                        @foreach (var recipe in allRecipes)
-                        {
-                            <Recipe Model="recipe" ToggleCallback="ToggleRecipe" SizeClasses="recipe-price-card" CloseCallback="RemoveRecipe" ToggleEnabled="false" ImageRotator="false"></Recipe>
-                        }
-                    </div>
+                <div class="p-3 main-carousel" style="height: 50vh;">
+                    @foreach (var recipe in allRecipes)
+                    {
+                        <Recipe Model="recipe" ToggleCallback="ToggleRecipe" SizeClasses="recipe-price-card" CloseCallback="RemoveRecipe" ToggleEnabled="false" ImageRotator="false"></Recipe>
+                    }
                 </div>
             </EditForm>
         </div>
@@ -66,7 +64,6 @@
         await base.OnInitializedAsync();
         try
         {
-            //await JSRuntime.InvokeVoidAsync("StartIsotope");
         }
         catch (Exception e)
         {
@@ -85,18 +82,19 @@
             }
             catch (Exception e)
             {
-                throw e;
+                Debug.WriteLine(e.Message);
             }
         }
     }
 
     private async void SearchRecipes()
     {
+        allRecipes.Clear();
+
         //Show disclaimer
         Disclaimer = true;
 
-        var searchResults = SearchGI.GetRecipes(currentSearch);
-        allRecipes.Clear();
+        var searchResults = await SearchGI.GetRecipes(currentSearch);
 
         foreach (var result in searchResults)
         {
@@ -111,58 +109,64 @@
             });
         }
 
-        try
-        {
-            var tasks = new List<Task>();
-
-            foreach (var recipe in allRecipes)
-            {
-                tasks.Add(Task.Run(() =>
-                {
-                    var result = SearchGI.AddRecipe(recipe).Result;
-                }));
-
-                foreach (var ingredient in recipe.Ingredients)
-                {
-                    //Filter unnecessary ingredients
-                    var ingredientWords = ingredient.Split(" ").ToList();
-                    var unnecessaryWords = ingredientWords.Where(x => x.Contains("cups"));
-                    var filteredIngredients = ingredientWords.Except(unnecessaryWords);
-
-                    var test = string.Join(" ", Regex.Split(ingredient, @"[\d]"));
-                    //(?< !^)(?=[A - Z])
-
-                    tasks.Add(Task.Run(() =>
-                    {
-                        try
-                        {
-                            var result = SearchGI.AddIngredient(ingredient).Result;
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.WriteLine(e, "Issue writing to database");
-                        }
-                    }));
-                }
-            }
-
-            try
-            {
-                await Task.WhenAll(tasks.ToArray());
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e, "Issue writing to database");
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.WriteLine(e, "Issue writing to database");
-        }
-
-        await JSRuntime.InvokeVoidAsync("StartIsotope");
         StateHasChanged();
+        await JSRuntime.InvokeVoidAsync("StartFlickity");
+
+        //Add to database
+        //try
+        //{
+        //    var tasks = new List<Task>();
+
+        //    foreach (var recipe in allRecipes)
+        //    {
+        //        tasks.Add(Task.Run(() =>
+        //        {
+        //            var result = SearchGI.AddRecipe(recipe).Result;
+        //        }));
+
+        //        foreach (var ingredient in recipe.Ingredients)
+        //        {
+        //            ////Filter unnecessary ingredients
+        //            //var ingredientWords = ingredient.Split(" ").ToList();
+        //            //var unnecessaryWords = ingredientWords.Where(x => x.Contains("cups"));
+        //            //var filteredIngredients = ingredientWords.Except(unnecessaryWords);
+
+        //            //var test = string.Join(" ", Regex.Split(ingredient, @"[\d]"));
+        //            ////(?< !^)(?=[A - Z])
+
+        //            tasks.Add(Task.Run(() =>
+        //            {
+        //                try
+        //                {
+        //                    var result = SearchGI.AddIngredient(ingredient).Result;
+        //                }
+        //                catch (Exception e)
+        //                {
+        //                    Debug.WriteLine(e, "Issue writing to database");
+        //                }
+        //            }));
+        //        }
+        //    }
+
+        //    try
+        //    {
+        //        await Task.WhenAll(tasks.ToArray());
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Debug.WriteLine(e, "Issue writing to database");
+        //    }
+        //}
+        //catch (Exception e)
+        //{
+        //    Debug.WriteLine(e, "Issue writing to database");
+        //}
+
+        StateHasChanged();
+
+        //await JSRuntime.InvokeVoidAsync("UpdateFlickity");
     }
+
     private async void ScrapeForRecipes()
     {
         var searchResults = SearchGI.GetRecipes(currentSearch, "foodnetwork");
@@ -189,13 +193,11 @@
 
         StateHasChanged();
     }
-
     private void RemoveRecipe(RecipeModel _recipe)
     {
         allRecipes.Remove(_recipe);
         StateHasChanged();
     }
-
     private void ToggleRecipe(RecipeModel _recipe, bool status)
     {
 
