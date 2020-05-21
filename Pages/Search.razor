@@ -4,38 +4,26 @@
 @using RestSharp.Extensions
 @using Culimancy.Common.HttpModels
 @using System.Diagnostics
+@using System.IO
 @using System.Text.RegularExpressions
+@using Newtonsoft.Json
 @inject SearchGI SearchGI
 @inject IJSRuntime JSRuntime
 
 
-<div style="position: relative; display: flex;">
-    <img class="background-image" src="images/pantry2.jpg" />
-    <div class="background-text-search">
-        <div class="col-8">
-            <h1 id="textBackground" style="font-family: wizard">Culimancy</h1>
-            <small class="text-muted">v0.18</small>
-
-            <small>This website was written in Blazor, and is currently a work in progress.</small>
-
-            @if (Disclaimer)
-            {
-                <div id="disclaimer">
-                    <small>
-                        This search asynchronously pulled recipe and nutritional information from several API's. <br />
-                        All recipes and ingredients are then stored in my own database. <br />
-                        Common words like chicken, onions, and garlic have their results cached in Redis for immediate access. <br />
-                        The end goal is to create a pantry management system that searches only by the grocery items currently in your possession.
-                    </small>
-                </div>
-            }
-
-        </div>
-        <div class="col-12 p-3">
+<div style="position: relative; width: 100%; height: 100%;">
+    <div style="width: 100%; height: 100px; position: relative; overflow: hidden;">
+        <h1 class="p-3" style="font-family: Roboto Slab; position: absolute;">Culimancy</h1>
+        <img src="images/pantrymgmt.PNG" style="width: 100%; min-height: 100%; min-width: 100%;" alt="Culimancy" />
+    </div>
+    <div style="width: 100%; height: auto; background-color: white;">
+        <div class="col-12" >
             <EditForm Model="allRecipes" OnSubmit="@SearchRecipes">
                 <h5>Search for a Recipe</h5>
                 <InputText border-radius:25px @bind-Value="@currentSearch"></InputText>
-                <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button>
+                <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button><br/>
+                <small class="text-muted">v0.18</small>
+                <small>This website was written in Blazor, and is currently a work in progress.</small><br/>
                 @*<button class="btn btn-primary" @onclick="ScrapeForRecipes">Custom Scrape</button>*@
                 @*<button class="btn btn-primary" @onclick="GetRecipe">Find in Database</button>*@
 
@@ -56,7 +44,6 @@
     private string currentSearch;
 
     public bool Loading = false;
-    public bool Disclaimer = false;
 
 
     protected override async Task OnInitializedAsync()
@@ -89,10 +76,14 @@
 
     private async void SearchRecipes()
     {
-        allRecipes.Clear();
+        var payload = File.ReadAllText("C:\\Users\\joshu\\source\\repos\\Culimancy\\wwwroot\\json.json");
+        var allIngredients = JsonConvert.DeserializeObject<RootObject>(payload);
+        //for(var i = 0; i < 20; i++)
+        //{
+        //    var test = await SearchGI.AddIngredients(allIngredients.tags[i]);
+        //}
 
-        //Show disclaimer
-        Disclaimer = true;
+        allRecipes.Clear();
 
         var searchResults = await SearchGI.GetRecipes(currentSearch);
 

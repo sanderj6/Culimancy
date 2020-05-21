@@ -56,6 +56,30 @@ namespace Storage
                 throw;
             }
         }
+        public async Task<IngredientDB> Add(IngredientDB recipe)
+        {
+            try
+            {
+                using (var dbConnection = new NpgsqlConnection(connectionStringMain))
+                {
+                    await dbConnection.OpenAsync();
+                    var result = await dbConnection.QueryFirstAsync<IngredientDB>(@"SELECT * FROM ""Ingredient_Insert""" +
+                                                                                  "(@name,@products,@url,@id,@known)",
+                        new { name = recipe.name, products = recipe.products, url = recipe.url, id = recipe.id, known = recipe.known });
+                    return result;
+                }
+            }
+            catch (NpgsqlException e)
+            {
+                _logger.LogError(e, "Failed to add recipe.");
+                throw;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Failed to add recipe.");
+                throw;
+            }
+        }
         public async Task<string> Add(string ingredient)
         {
             try

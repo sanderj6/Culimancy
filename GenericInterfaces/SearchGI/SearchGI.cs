@@ -88,6 +88,13 @@ namespace GenericInterfaces.Search
 
             return response;
         }
+        public async Task<IngredientDB> AddIngredients(IngredientDB ingredients)
+        {
+            RecipeRepository repo = new RecipeRepository(_config, _loggerFactory);
+            var response = await repo.Add(ingredients);
+
+            return response;
+        }
         public async Task<List<RecipeModel>> GetRecipeByKeyword(string keyword)
         {
             RecipeRepository repo = new RecipeRepository(_config, _loggerFactory);

@@ -2,16 +2,33 @@
 @using Culimancy.Services.ModalService
 @using Culimancy.Pages.Templates
 
-    <div class="footer-holder" @onclick="CreateAccount">
+<div style="position: relative; width: 100%; height: 100%;">
+    @if (Disclaimer)
+    {
+        <div class="col-12" id="disclaimer" style="position: absolute;">
+            <small style="justify-content: center; display: grid;">
+                This search asynchronously pulls recipe and nutritional information from several API's. <br />
+                All recipes and ingredients are then stored in my own database. <br />
+                Common words like chicken, onions, and garlic have their results cached in Redis for immediate access. <br />
+                The end goal is to create a pantry management system that searches only by the grocery items currently in your possession.
+            </small>
+        </div>
+    }
+    <div class="footer-holder" @onclick="CreateAccount" style="position: absolute;">
         <input class="groceryBag" type="image" src="images/grocerybag.png" alt="Submit" style="max-height: 100%; max-width: 100%; height: auto;">
         @*<input type="image" class="link" src="/images/plus.png" />*@
     </div>
+</div>
 
 @code {
     private bool collapseNavMenu = true;
+    public bool Disclaimer = false;
 
     private void CreateAccount()
     {
+        Disclaimer = true;
+        StateHasChanged();
+
         ModalService.Show<string>("Customer Questionnaire", "culimancy-modal-md", typeof(Culimancy.Pages.Templates.CreateAccount), (account) =>
         {
             try
@@ -20,8 +37,8 @@
             }
             catch (Exception e)
             {
-            //_logger.LogError($"Failed to Update Questionnaire! Error: {e}");
-        }
+                //_logger.LogError($"Failed to Update Questionnaire! Error: {e}");
+            }
         });
     }
 }
