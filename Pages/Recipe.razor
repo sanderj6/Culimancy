@@ -4,7 +4,7 @@
 @using System.Diagnostics
 @inject SearchGI SearchGI
 
-<div class="carousel-cell recipe-card-wrapper col-lg-4 col-md-6 col-sm-12 pb-2 px-2">
+<div id="disclaimer" class="carousel-cell recipe-card-wrapper col-lg-4 col-md-6 col-sm-12 pb-2 px-2">
     <div class="recipe-card card @SizeClasses">
         <div class="card-title">
             <div class="fa-pull-right">
@@ -27,7 +27,7 @@
                     </button>
                 }
             </div>
-            <div class="recipe-card-model-trim">@Model.Name</div>
+            <div class="recipe-card-model-trim" style="font-family: Roboto Slab;">@Model.Name</div>
             @*<div class="recipe-card-model-trim">Gluten-Free, Nut-Free</div>*@
         </div>
         <div class="card-body">

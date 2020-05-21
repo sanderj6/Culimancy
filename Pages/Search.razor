@@ -17,17 +17,17 @@
         <img src="images/pantrymgmt.PNG" style="width: 100%; min-height: 100%; min-width: 100%;" alt="Culimancy" />
     </div>
     <div style="width: 100%; height: auto; background-color: white;">
-        <div class="col-12" >
+        <div class="col-12">
             <EditForm Model="allRecipes" OnSubmit="@SearchRecipes">
                 <h5>Search for a Recipe</h5>
                 <InputText border-radius:25px @bind-Value="@currentSearch"></InputText>
-                <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button><br/>
+                <button class="btn btn-primary" @onclick="SearchRecipes">GO!</button><br />
                 <small class="text-muted">v0.18</small>
-                <small>This website was written in Blazor, and is currently a work in progress.</small><br/>
+                <small>This website was written in Blazor, and is currently a work in progress.</small><br />
                 @*<button class="btn btn-primary" @onclick="ScrapeForRecipes">Custom Scrape</button>*@
                 @*<button class="btn btn-primary" @onclick="GetRecipe">Find in Database</button>*@
 
-                <div class="p-3 main-carousel" style="height: 50vh;">
+                <div class="p-3 main-carousel" style="height: 50vh; z-index: 5; ">
                     @foreach (var recipe in allRecipes)
                     {
                         <Recipe Model="recipe" ToggleCallback="ToggleRecipe" SizeClasses="recipe-price-card" CloseCallback="RemoveRecipe" ToggleEnabled="false" ImageRotator="false"></Recipe>
@@ -37,12 +37,16 @@
         </div>
     </div>
 </div>
-
+@if (Gradient)
+{
+    <div id="yellowGrad" style="width: 100%; height: 100vh; position: relative; z-index: 0; overflow: auto;">
+    </div>
+}
 @code {
     private RecipeModel recipeModel = new RecipeModel();
     public List<RecipeModel> allRecipes = new List<RecipeModel>();
     private string currentSearch;
-
+    public bool Gradient = false;
     public bool Loading = false;
 
 
@@ -76,8 +80,8 @@
 
     private async void SearchRecipes()
     {
-        var payload = File.ReadAllText("C:\\Users\\joshu\\source\\repos\\Culimancy\\wwwroot\\json.json");
-        var allIngredients = JsonConvert.DeserializeObject<RootObject>(payload);
+        //var payload = File.ReadAllText("C:\\Users\\joshu\\source\\repos\\Culimancy\\wwwroot\\json.json");
+        //var allIngredients = JsonConvert.DeserializeObject<RootObject>(payload);
         //for(var i = 0; i < 20; i++)
         //{
         //    var test = await SearchGI.AddIngredients(allIngredients.tags[i]);
@@ -153,6 +157,7 @@
         //    Debug.WriteLine(e, "Issue writing to database");
         //}
 
+        Gradient = true;
         StateHasChanged();
 
         //await JSRuntime.InvokeVoidAsync("UpdateFlickity");
