@@ -36,12 +36,13 @@
             </EditForm>
         </div>
     </div>
+    @if (Gradient)
+    {
+        <div id="yellowGrad" style="width: 100%; height: 100vh; position: relative; z-index: 0; overflow: auto;">
+        </div>
+    }
 </div>
-@if (Gradient)
-{
-    <div id="yellowGrad" style="width: 100%; height: 100vh; position: relative; z-index: 0; overflow: auto;">
-    </div>
-}
+
 @code {
     private RecipeModel recipeModel = new RecipeModel();
     public List<RecipeModel> allRecipes = new List<RecipeModel>();
@@ -86,6 +87,8 @@
         //{
         //    var test = await SearchGI.AddIngredients(allIngredients.tags[i]);
         //}
+
+        Gradient = true;
 
         allRecipes.Clear();
 
@@ -157,7 +160,6 @@
         //    Debug.WriteLine(e, "Issue writing to database");
         //}
 
-        Gradient = true;
         StateHasChanged();
 
         //await JSRuntime.InvokeVoidAsync("UpdateFlickity");
